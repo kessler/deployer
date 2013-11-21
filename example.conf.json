@@ -1,0 +1,7 @@
+{
+	"port": 6735,
+	"dirtyPath": "/home/roman/Work/needle",
+	"prodPath": "/tmp/prod",
+	"stopCommand": "sdt stop --config daemon.json --pidFile /home/roman/needle-server.pid",
+	"startCommand": "sdt start-monitored --config daemon.json --pidFile /home/roman/needle-server.pid"
+}
