@@ -166,4 +166,28 @@ describe('Deployer', function() {
 
 	});
 
+	it('_onUpdated do nothing on error', function() {
+
+		Deployer.prototype._onUpdated.call({}, 'error');
+
+	});
+
+	it('_onUpdated schedules pull if there is no an error', function() {
+
+		var mockSchedulePullCallCount = 0;
+
+		var mock = {
+
+			_schedulePull: function() {
+				mockSchedulePullCallCount++;
+			}
+
+		};
+
+		Deployer.prototype._onUpdated.call(mock, null);
+
+		assert(mockSchedulePullCallCount === 1);
+
+	});
+
 });
