@@ -190,4 +190,26 @@ describe('Deployer', function() {
 
 	});
 
+	it('_schedulePull', function() {
+
+		var mockSetTimeoutCallCount = 0;
+
+		var mock = {
+
+			_pullBound: 'testPullBound',
+
+			_setTimeout: function(callback, time) {
+				mockSetTimeoutCallCount++;
+				assert(callback === 'testPullBound');
+				assert(time === 60000);
+			}
+
+		};
+
+		Deployer.prototype._schedulePull.call(mock);
+
+		assert(mockSetTimeoutCallCount === 1);
+
+	});
+
 });
