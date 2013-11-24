@@ -304,4 +304,35 @@ describe('Deployer', function() {
 
 	});
 
+	it('_updateDeps', function() {
+
+		var mockChildProcessExecCallCount = 0;
+
+		var mock = {
+
+			_conf: {
+				dirtyPath: 'testDirtyPath'
+			},
+
+			_updateDepsProcessFinishedBound: 'testUpdateDepsProcessFinishedBound',
+
+			_childProcess: {
+
+				exec: function(command, settings, callback) {
+					assert(command === 'npm install');
+					assert.deepEqual(settings, { cwd: 'testDirtyPath' });
+					assert(callback === 'testUpdateDepsProcessFinishedBound');
+					mockChildProcessExecCallCount++;
+				}
+
+			}
+
+		};
+
+		Deployer.prototype._updateDeps.call(mock);
+
+		assert(mockChildProcessExecCallCount === 1);
+
+	});
+
 });
