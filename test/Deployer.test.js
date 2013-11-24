@@ -375,4 +375,35 @@ describe('Deployer', function() {
 
 	});
 
+	it('_prepareServiceToStop', function() {
+
+		var mockOnServiceRepliedCallCount = 0;
+		var mockSockSendCallCount = 0;
+
+		var mock = {
+
+			_onServiceReplied: function(callback) {
+				assert(callback === 'testCallBack');
+				mockOnServiceRepliedCallCount++;
+			},
+
+			_sock: {
+
+				send: function(message, callback) {
+					assert(message === 'stop');
+					mockSockSendCallCount++;
+					callback();
+				}
+
+			}
+
+		};
+
+		p._prepareServiceToStop.call(mock, 'testCallBack');
+
+		assert(mockSockSendCallCount === 1);
+		assert(mockOnServiceRepliedCallCount === 1);
+
+	});
+
 });
