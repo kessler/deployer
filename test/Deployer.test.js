@@ -96,6 +96,47 @@ describe('Deployer', function() {
 		Deployer.prototype._onPulled.call(mock, null, false);
 
 		assert(mockSchedulePullCallCount === 1);
-	})
+
+	});
+
+	it('_onDepsUpdated reschedules update on error', function() {
+
+		var mockSetTimeoutCallCount = 0;
+
+		var mock = {
+
+			_updateDepsBound: '_updateDepsBound',
+
+			_setTimeout: function(callback, time) {
+				mockSetTimeoutCallCount++;
+				assert(callback === '_updateDepsBound');
+				assert(time === 60000);
+			}
+
+		};
+
+		Deployer.prototype._onDepsUpdated.call(mock, 'error');
+
+		assert(mockSetTimeoutCallCount === 1);
+
+	});
+
+	it('_onDepsUpdated updates if there is no an error', function() {
+
+		var mockUpdateCallCount = 0;
+
+		var mock = {
+
+			_update: function() {
+				mockUpdateCallCount++;
+			}
+
+		};
+
+		Deployer.prototype._onDepsUpdated.call(mock, null);
+
+		assert(mockUpdateCallCount === 1);
+
+	});
 
 });
