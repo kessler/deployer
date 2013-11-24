@@ -481,4 +481,34 @@ describe('Deployer', function() {
 
 	});
 
+	it('_startService', function() {
+
+		var mockChildProcessExecCallCount = 0;
+
+		var mock = {
+
+			_conf: {
+				startCommand: 'testStartCommand',
+				prodPath: 'testProdPath'
+			},
+
+			_childProcess: {
+
+				exec: function(command, settings, callback) {
+					assert(command === 'testStartCommand');
+					assert.deepEqual(settings, { cwd: 'testProdPath' });
+					assert(callback === 'testCallBack');
+					mockChildProcessExecCallCount++;
+				}
+
+			}
+
+		};
+
+		p._startService.call(mock, 'testCallBack');
+
+		assert(mockChildProcessExecCallCount === 1);
+
+	});
+
 });
