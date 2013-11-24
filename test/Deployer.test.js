@@ -511,4 +511,66 @@ describe('Deployer', function() {
 
 	});
 
+	it('_createNew', function() {
+
+		var mockFsMkdirCallCount = 0;
+
+		var mock = {
+
+			_conf: {
+
+				prodPath: 'testProdPath'
+
+			},
+
+			_fs: {
+
+				mkdir: function(path, callback) {
+					assert(path === 'testProdPath');
+					assert(callback === 'testCallBack');
+					mockFsMkdirCallCount++;
+				}
+
+			}
+
+		};
+
+		p._createNew.call(mock, 'testCallBack');
+
+		assert(mockFsMkdirCallCount === 1);
+
+	});
+
+	it('_copyUpdated', function() {
+
+		var mockFsCopyRecursiveCallCount = 0;
+
+		var mock = {
+
+			_conf: {
+
+				dirtyPath: 'testDirtyPath',
+				prodPath: 'testProdPath'
+
+			},
+
+			_fs: {
+
+				copyRecursive: function(from, to, callback) {
+					assert(from === 'testDirtyPath');
+					assert(to === 'testProdPath');
+					assert(callback === 'testCallBack');
+					mockFsCopyRecursiveCallCount++;
+				}
+
+			}
+
+		};
+
+		p._copyUpdated.call(mock, 'testCallBack');
+
+		assert(mockFsCopyRecursiveCallCount === 1);
+
+	});
+
 });
