@@ -57,4 +57,45 @@ describe('Deployer', function() {
 
 	});
 
+	it('_onPulled do nothing on error', function() {
+
+		Deployer.prototype._onPulled.call({}, 'error');
+
+	});
+
+	it('_onPulled update dependencies if update is true', function() {
+
+		var mockUpdateDepsCallCount = 0;
+
+		var mock = {
+
+			_updateDeps: function() {
+				mockUpdateDepsCallCount++;
+			}
+
+		};
+
+		Deployer.prototype._onPulled.call(mock, null, true);
+
+		assert(mockUpdateDepsCallCount === 1);
+
+	});
+
+	it('_onPulled schedules pull if update is false', function() {
+
+		var mockSchedulePullCallCount = 0;
+
+		var mock = {
+
+			_schedulePull: function() {
+				mockSchedulePullCallCount++;
+			}
+
+		};
+
+		Deployer.prototype._onPulled.call(mock, null, false);
+
+		assert(mockSchedulePullCallCount === 1);
+	})
+
 });
