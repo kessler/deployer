@@ -406,4 +406,19 @@ describe('Deployer', function() {
 
 	});
 
+	it('_onServiceReplied', function() {
+
+		var mockCallbackCallCount = 0;
+
+		var mockCallback = function(err) {
+			assert(err === null);
+			mockCallbackCallCount++;
+		};
+
+		p._onServiceReplied.call({}, mockCallback, 'testMessage');
+
+		assert(mockCallbackCallCount === 1);
+
+	});
+
 });
