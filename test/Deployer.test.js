@@ -421,4 +421,34 @@ describe('Deployer', function() {
 
 	});
 
+	it('_stopService', function() {
+
+		var mockChildProcessExecCallCount = 0;
+
+		var mock = {
+
+			_conf: {
+				stopCommand: 'testStopCommand',
+				prodPath: 'testProdPath'
+			},
+
+			_childProcess: {
+
+				exec: function(command, settings, callback) {
+					assert(command === 'testStopCommand');
+					assert.deepEqual(settings, { cwd: 'testProdPath' });
+					assert(callback === 'testCallBack');
+					mockChildProcessExecCallCount++;
+				}
+
+			}
+
+		};
+
+		p._stopService.call(mock, 'testCallBack');
+
+		assert(mockChildProcessExecCallCount === 1);
+
+	});
+
 });
