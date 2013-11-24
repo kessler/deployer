@@ -139,4 +139,31 @@ describe('Deployer', function() {
 
 	});
 
+	it('_update', function() {
+
+		var mockAsyncSeriesCallCount = 0;
+
+		var mock = {
+
+			_updateTasks: 'testTasks',
+			_onUpdatedBound: 'testOnUpdatedBound',
+
+			_async: {
+
+				series: function(tasks, callback) {
+					mockAsyncSeriesCallCount++;
+					assert(tasks === 'testTasks');
+					assert(callback === 'testOnUpdatedBound');
+				}
+
+			}
+
+		};
+
+		Deployer.prototype._update.call(mock);
+
+		assert(mockAsyncSeriesCallCount === 1);
+
+	});
+
 });
