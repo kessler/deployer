@@ -243,4 +243,65 @@ describe('Deployer', function() {
 
 	});
 
+	it('_onPullProcessFinished forwards error on error', function() {
+
+		var mockOnPulled = 0;
+
+		var mock = {
+
+			_onPulled: function(err) {
+				assert(err === 'testError');
+				mockOnPulled++;
+			}
+
+		};
+
+		Deployer.prototype._onPullProcessFinished.call(mock, 'testError');
+
+		assert(mockOnPulled === 1);
+
+	});
+
+	it('_onPullProcessFinished if already up-to-date', function() {
+
+		var testStdout = new Buffer('Already up-to-date.\n');
+		var mockOnPulled = 0;
+
+		var mock = {
+
+			_onPulled: function(err, updated) {
+				assert(err === null);
+				assert(updated === false);
+				mockOnPulled++;
+			}
+
+		};
+
+		Deployer.prototype._onPullProcessFinished.call(mock, null, testStdout);
+
+		assert(mockOnPulled === 1);
+
+	});
+
+	it('_onPullProcessFinished if not up-to-date', function() {
+
+		var testStdout = new Buffer('Bla bla.\n');
+		var mockOnPulled = 0;
+
+		var mock = {
+
+			_onPulled: function(err, updated) {
+				assert(err === null);
+				assert(updated === true);
+				mockOnPulled++;
+			}
+
+		};
+
+		Deployer.prototype._onPullProcessFinished.call(mock, null, testStdout);
+
+		assert(mockOnPulled === 1);
+
+	});
+
 });
