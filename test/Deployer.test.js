@@ -451,4 +451,34 @@ describe('Deployer', function() {
 
 	});
 
+	it('_removeOld', function() {
+
+		var mockFsRmrfCallCount = 0;
+
+		var mock = {
+
+			_conf: {
+
+				prodPath: 'testProdPath'
+
+			},
+
+			_fs: {
+
+				rmrf: function(path, callback) {
+					assert(path === 'testProdPath');
+					assert(callback === 'testCallBack');
+					mockFsRmrfCallCount++;
+				}
+
+			}
+
+		};
+
+		p._removeOld.call(mock, 'testCallBack');
+
+		assert(mockFsRmrfCallCount === 1);
+
+	});
+
 });
