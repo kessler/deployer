@@ -212,4 +212,35 @@ describe('Deployer', function() {
 
 	});
 
+	it('_pull', function() {
+
+		var mockChildProcessExecCallCount = 0;
+
+		var mock = {
+
+			_conf: {
+				dirtyPath: 'testDirtyPath'
+			},
+
+			_onPullProcessFinishedBound: 'testOnPullProcessFinishedBound',
+
+			_childProcess: {
+
+				exec: function(command, settings, callback) {
+					mockChildProcessExecCallCount++;
+					assert(command === 'git pull');
+					assert.deepEqual(settings, { cwd: 'testDirtyPath' });
+					assert(callback === 'testOnPullProcessFinishedBound');
+				}
+
+			}
+
+		};
+
+		Deployer.prototype._pull.call(mock);
+
+		assert(mockChildProcessExecCallCount === 1);
+
+	});
+
 });
